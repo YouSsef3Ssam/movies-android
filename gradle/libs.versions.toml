@@ -1,0 +1,197 @@
+[versions]
+android-gradle-plugin = "8.13.0"
+kotlin = "2.2.20"
+kotlin-ksp = "2.3.4"
+secrets-gradle-plugin = "2.0.1"
+junit5-pluing = "1.14.0.0"
+
+#UI
+appcompat = "1.7.1"
+core-ktx = "1.17.0"
+lifecycle-runtime-ktx = "2.10.0"
+splash-screen = "1.2.0"
+app-startup = "1.2.0"
+material-icons-extended = "1.7.8"
+
+# Compose
+compose-bom = "2025.10.00"
+compose-activity = "1.11.0"
+compose-runtime = "2.9.4"
+compose-navigation = "2.9.5"
+compose-paging = "3.3.6"
+
+# DI
+koin-bom = "3.5.3"
+
+# Storage
+room-db = "2.8.4"
+
+# Kotlin Serialization
+kotlinx-serialization-json = "1.9.0"
+
+# Network
+ktor = "2.3.9"
+
+#Utils
+pluto = "3.0.1"
+timber = "5.0.1"
+coil = "2.7.0"
+
+# Linting
+ktlint = "13.0.0"
+detekt = "1.23.8"
+
+# Testing
+junit5 = "6.0.1"
+mockk = "1.14.7"
+truth = "1.4.5"
+turbine = "1.2.1"
+coroutines-test = "1.10.2"
+konsist = "0.17.3"
+paging-runtime-ktx = "3.3.6"
+
+[libraries]
+# Plugins
+android-gradle-plugin = { group = "com.android.tools.build", name = "gradle", version.ref = "android-gradle-plugin" }
+kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+compose-plugin = { group = "org.jetbrains.kotlin", name = "compose-compiler-gradle-plugin", version.ref = "kotlin" }
+ktlint-gradle = { group = "org.jlleitschuh.gradle", name = "ktlint-gradle", version.ref = "ktlint" }
+detekt-gradle = { group = "io.gitlab.arturbosch.detekt", name = "detekt-gradle-plugin", version.ref = "detekt" }
+
+# UI
+appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
+lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle-runtime-ktx" }
+splash-screen = { group = "androidx.core", name = "core-splashscreen", version.ref = "splash-screen" }
+app-startup = { group = "androidx.startup", name = "startup-runtime", version.ref = "app-startup" }
+material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "material-icons-extended" }
+
+## Compose
+compose-activity = { group = "androidx.activity", name = "activity-compose", version.ref = "compose-activity" }
+compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
+compose-ui = { group = "androidx.compose.ui", name = "ui" }
+compose-material3 = { group = "androidx.compose.material3", name = "material3" }
+compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+compose-runtime = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "compose-runtime" }
+compose-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "compose-navigation" }
+compose-paging = { group = "androidx.paging", name = "paging-compose", version.ref = "compose-paging" }
+
+# DI
+koin-bom = { group = "io.insert-koin", name = "koin-bom", version.ref = "koin-bom" }
+koin-android = { group = "io.insert-koin", name = "koin-android" }
+koin-core = { group = "io.insert-koin", name = "koin-core" }
+koin-compose = { group = "io.insert-koin", name = "koin-androidx-compose" }
+koin-test = { group = "io.insert-koin", name = "koin-test-junit5" }
+
+# Storage
+room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room-db" }
+room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room-db" }
+room-paging = { group = "androidx.room", name = "room-paging", version.ref = "room-db" }
+room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room-db" }
+
+# Kotlin Serialization
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
+
+# Network
+ktor-android = { group = "io.ktor", name = "ktor-client-android", version.ref = "ktor" }
+ktor-okhttp = { group = "io.ktor", name = "ktor-client-okhttp", version.ref = "ktor" }
+ktor-logging = { group = "io.ktor", name = "ktor-client-logging", version.ref = "ktor" }
+ktor-contentNegotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-serialization = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
+ktor-test = { group = "io.ktor", name = "ktor-client-mock", version.ref = "ktor" }
+
+# Utils
+timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
+coil = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
+
+## Pluto
+pluto-debug = { group = "com.androidpluto", name = "pluto", version.ref = "pluto" }
+pluto-release = { group = "com.androidpluto", name = "pluto-no-op", version.ref = "pluto" }
+## Pluto Network
+pluto-network-debug = { group = "com.androidpluto.plugins", name = "network", version.ref = "pluto" }
+pluto-network-release = { group = "com.androidpluto.plugins", name = "network-no-op", version.ref = "pluto" }
+## Pluto Logger
+pluto-logger-debug = { group = "com.androidpluto.plugins", name = "logger", version.ref = "pluto" }
+pluto-logger-release = { group = "com.androidpluto.plugins", name = "logger-no-op", version.ref = "pluto" }
+## Pluto database
+pluto-room-debug = { group = "com.androidpluto.plugins", name = "rooms-db", version.ref = "pluto" }
+pluto-room-release = { group = "com.androidpluto.plugins", name = "rooms-db-no-op", version.ref = "pluto" }
+
+# Testing
+## Unit
+junit5 = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junit5" }
+junit5-launcher = { group = "org.junit.platform", name = "junit-platform-launcher", version.ref = "junit5" }
+mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
+truth = { group = "com.google.truth", name = "truth", version.ref = "truth" }
+turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
+coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutines-test" }
+konsist = { group = "com.lemonappdev", name = "konsist", version.ref = "konsist" }
+paging-runtime-ktx = { group = "androidx.paging", name = "paging-runtime-ktx", version.ref = "paging-runtime-ktx" }
+
+[bundles]
+androidx = [
+    "appcompat",
+    "core-ktx",
+    "lifecycle-runtime-ktx",
+]
+compose = [
+    "compose-activity",
+    "compose-ui",
+    "compose-material3",
+    "compose-runtime",
+    "compose-ui-graphics",
+    "compose-ui-tooling-preview",
+]
+koin = [
+    "koin-android",
+    "koin-core",
+    "koin-compose",
+]
+ktor = [
+    "ktor-android",
+    "ktor-okhttp",
+    "ktor-logging",
+    "ktor-contentNegotiation",
+    "ktor-serialization",
+]
+storage-room = [
+    "room-runtime",
+    "room-ktx",
+    "room-paging",
+]
+pluto-debug = [
+    "pluto-debug",
+    "pluto-network-debug",
+    "pluto-logger-debug",
+    "pluto-room-debug"
+]
+pluto-release = [
+    "pluto-release",
+    "pluto-network-release",
+    "pluto-logger-release",
+    "pluto-room-release"
+]
+testing-unit = [
+    "junit5",
+    "mockk",
+    "truth",
+    "turbine",
+    "coroutines-test",
+    "koin-test",
+    "ktor-test"
+]
+
+[plugins]
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+kotlin-ksp = { id = "com.google.devtools.ksp", version.ref = "kotlin-ksp" }
+android-secrets = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "secrets-gradle-plugin" }
+junit5-pluing = { id = "de.mannodermaus.android-junit5", version.ref = "junit5-pluing" }
+
+#Custom Plugins
+innovation-android-application = { id = "innovation.android.application", version = "unspecified" }
+innovation-android-library = { id = "innovation.android.library", version = "unspecified" }
+innovation-compose = { id = "innovation.compose", version = "unspecified" }
+innovation-linting = { id = "innovation.linting", version = "unspecified" }
+innovation-testing-unit = { id = "innovation.testing.unit", version = "unspecified" }

@@ -1,0 +1,64 @@
+#!/bin/bash
+
+echo "*********************************************************"
+echo "Running git pre-commit hook. Running Linting ... "
+echo "*********************************************************"
+
+# Function to find the project root directory by looking for the presence of settings.gradle or settings.gradle.kts
+find_project_root() {
+  local dir="$1"
+  while [[ "$dir" != "/" && ! -f "$dir/settings.gradle" && ! -f "$dir/settings.gradle.kts" ]]; do
+    dir=$(dirname "$dir")
+  done
+  if [[ -f "$dir/settings.gradle" || -f "$dir/settings.gradle.kts" ]]; then
+    echo "$dir"
+  else
+    echo ""
+  fi
+}
+
+# Gather the staged files - to make sure changes are saved only for these files.
+stagedFiles=$(git diff --staged --name-only)
+
+# Get the current working directory
+BASE_DIR="$(pwd)"
+
+# Find the project root directory
+PROJECT_ROOT=$(find_project_root "$BASE_DIR")
+if [[ -z "$PROJECT_ROOT" ]]; then
+  echo "Error: Could not find the project root directory."
+  exit 1
+fi
+
+echo "Debug: Project root directory - $PROJECT_ROOT"
+
+# Change to the main project directory to be able to run ./gradlew
+cd "$PROJECT_ROOT" || { echo "Warning: Could not change to directory $PROJECT_ROOT. Proceeding with current directory."; }
+
+# run linting tasks
+./gradlew ktlintFormat ktlintCheck detekt
+
+status=$?
+
+echo "Linting Result => $status"
+
+if [ "$status" = 0 ] ; then
+    echo "Static analysis found no problems."
+    # Add staged file changes to git
+    for file in $stagedFiles; do
+      if test -f "$file"; then
+        git add $file
+      fi
+    done
+    #Exit
+    exit 0
+else
+    echo "*********************************************************"
+    echo "       ********************************************      "
+    echo 1>&2 "ktlint and Detekt found violations it could not fix."
+    echo "Run ktlintFormat ktlintCheck detekt in your terminal and fix the issues before trying to commit again."
+    echo "       ********************************************      "
+    echo "*********************************************************"
+    #Exit
+    exit 1
+fi

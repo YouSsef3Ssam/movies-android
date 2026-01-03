@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Youssef Essam Task</string>
+
+    <!-- Common -->
+    <string name="error_general_message">Something went wrong</string>
+    <string name="common_retry_button">Retry</string>
+    <string name="movie_adult_label">A</string>
+    <string name="movie_not_adult_label">U/A</string>
+
+    <!-- Movies Screen -->
+    <string name="movies_screen_item_movie_votes_and_year">%1$d votes • %2$s</string>
+
+    <!-- Movies Details Screen -->
+    <string name="movie_details_screen_adult_label">Adult</string>
+    <string name="movie_details_screen_movie_type_adult">Yes</string>
+    <string name="movie_details_screen_movie_type_not_adult">No</string>
+    <string name="movie_details_screen_rate_label">Rate</string>
+    <string name="movie_details_screen_votes_label">Votes</string>
+    <string name="movie_details_screen_language_label">Language</string>
+    <string name="movie_details_screen_release_date_label">Release</string>
+    <string name="movie_details_screen_overview_label">Overview</string>
+</resources>
