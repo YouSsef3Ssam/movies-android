@@ -17,40 +17,42 @@ import java.io.IOException
 @OptIn(ExperimentalPagingApi::class)
 internal class MoviesRemoteMediator(
     private val remoteSource: MoviesSource,
-    private val moviesDatabase: MoviesDatabase
+    private val moviesDatabase: MoviesDatabase,
 ) : RemoteMediator<Int, MovieEntity>() {
-
     override suspend fun load(
         loadType: LoadType,
-        state: PagingState<Int, MovieEntity>
+        state: PagingState<Int, MovieEntity>,
     ): MediatorResult {
-        val page = when (loadType) {
-            LoadType.REFRESH -> {
-                val remoteKeys = getRemoteKeyClosestToCurrentPosition(state)
-                remoteKeys?.nextPage?.minus(1) ?: PAGING_STARTING_PAGE
-            }
+        val page =
+            when (loadType) {
+                LoadType.REFRESH -> {
+                    val remoteKeys = getRemoteKeyClosestToCurrentPosition(state)
+                    remoteKeys?.nextPage?.minus(1) ?: PAGING_STARTING_PAGE
+                }
 
-            LoadType.PREPEND -> {
-                val remoteKeys = getRemoteKeyForFirstItem(state)
-                remoteKeys?.prevPage
-                    ?: return MediatorResult.Success(endOfPaginationReached = remoteKeys != null)
-            }
+                LoadType.PREPEND -> {
+                    val remoteKeys = getRemoteKeyForFirstItem(state)
+                    remoteKeys?.prevPage
+                        ?: return MediatorResult.Success(endOfPaginationReached = remoteKeys != null)
+                }
 
-            LoadType.APPEND -> {
-                val remoteKeys = getRemoteKeyForLastItem(state)
-                remoteKeys?.nextPage
-                    ?: return MediatorResult.Success(endOfPaginationReached = remoteKeys != null)
+                LoadType.APPEND -> {
+                    val remoteKeys = getRemoteKeyForLastItem(state)
+                    remoteKeys?.nextPage
+                        ?: return MediatorResult.Success(endOfPaginationReached = remoteKeys != null)
+                }
             }
-        }
         try {
-            val apiResponse = remoteSource.getMovies(
-                pageNumber = page,
-                pageSize = state.config.pageSize
-            )
-            val movies = apiResponse
-                .data
-                .orEmpty()
-                .map { it.toEntity() }
+            val apiResponse =
+                remoteSource.getMovies(
+                    pageNumber = page,
+                    pageSize = state.config.pageSize,
+                )
+            val movies =
+                apiResponse
+                    .data
+                    .orEmpty()
+                    .map { it.toEntity() }
 
             val endOfPaginationReached = apiResponse.page == apiResponse.totalPages
             moviesDatabase.withTransaction {
@@ -61,9 +63,10 @@ internal class MoviesRemoteMediator(
                 val prevPage = if (page == PAGING_STARTING_PAGE) null else page - 1
                 val nextPage = if (endOfPaginationReached) null else page + 1
 
-                val keys = movies.map { movie ->
-                    MovieRemoteKey(movieId = movie.id, prevPage = prevPage, nextPage = nextPage)
-                }
+                val keys =
+                    movies.map { movie ->
+                        MovieRemoteKey(movieId = movie.id, prevPage = prevPage, nextPage = nextPage)
+                    }
                 moviesDatabase.remoteKeysDao().insertAll(keys)
                 moviesDatabase.moviesDao().insertAll(movies = movies)
             }
@@ -89,9 +92,7 @@ internal class MoviesRemoteMediator(
             }
     }
 
-    private suspend fun getRemoteKeyClosestToCurrentPosition(
-        state: PagingState<Int, MovieEntity>
-    ): MovieRemoteKey? {
+    private suspend fun getRemoteKeyClosestToCurrentPosition(state: PagingState<Int, MovieEntity>): MovieRemoteKey? {
         return state.anchorPosition?.let { position ->
             state.closestItemToPosition(position)?.let { movie ->
                 moviesDatabase.remoteKeysDao().remoteKeysById(movieId = movie.id)

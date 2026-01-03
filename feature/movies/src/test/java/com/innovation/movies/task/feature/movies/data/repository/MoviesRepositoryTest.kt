@@ -23,10 +23,8 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertInstanceOf
 import org.junit.jupiter.api.assertNotNull
 
-
 @OptIn(ExperimentalCoroutinesApi::class)
 internal class MoviesRepositoryTest {
-
     private val testDispatcher = StandardTestDispatcher()
 
     private lateinit var repository: MoviesRepositoryImpl
@@ -42,41 +40,45 @@ internal class MoviesRepositoryTest {
     }
 
     @Test
-    fun `getMovies should emit correctly mapped DomainMovies from PagingSource`() = runTest {
-        val pager = Pager(
-            config = PagingConfig(pageSize = 10),
-            pagingSourceFactory = { FakeMoviesPagingSource() }
-        )
-        repository = MoviesRepositoryImpl(
-            pager = pager,
-            ioDispatcher = testDispatcher
-        )
-        val differ = AsyncPagingDataDiffer(
-            diffCallback = IdBasedDiffCallback<DomainMovie> { it.id },
-            updateCallback = NoopListCallback,
-            workerDispatcher = Dispatchers.Main
-        )
-        val job = launch {
-            repository.getMovies().collect {
-                differ.submitData(it)
-            }
+    fun `getMovies should emit correctly mapped DomainMovies from PagingSource`() =
+        runTest {
+            val pager =
+                Pager(
+                    config = PagingConfig(pageSize = 10),
+                    pagingSourceFactory = { FakeMoviesPagingSource() },
+                )
+            repository =
+                MoviesRepositoryImpl(
+                    pager = pager,
+                    ioDispatcher = testDispatcher,
+                )
+            val differ =
+                AsyncPagingDataDiffer(
+                    diffCallback = IdBasedDiffCallback<DomainMovie> { it.id },
+                    updateCallback = NoopListCallback,
+                    workerDispatcher = Dispatchers.Main,
+                )
+            val job =
+                launch {
+                    repository.getMovies().collect {
+                        differ.submitData(it)
+                    }
+                }
+            advanceUntilIdle()
+
+            assertEquals(1, differ.itemCount)
+            val domainMovie = differ.getItem(0)
+            assertNotNull(domainMovie)
+            assertInstanceOf<DomainMovie>(domainMovie)
+            assertEquals(mockedMovieEntity.id, domainMovie.id)
+            assertEquals(mockedMovieEntity.title, domainMovie.title)
+            assertEquals(mockedMovieEntity.posterPath, domainMovie.posterPath)
+            assertEquals(mockedMovieEntity.overview, domainMovie.overview)
+            assertEquals(mockedMovieEntity.voteAverage, domainMovie.voteAverage)
+            assertEquals(mockedMovieEntity.voteCount, domainMovie.voteCount)
+            assertEquals(mockedMovieEntity.originalLanguage, domainMovie.originalLanguage)
+            assertEquals(mockedMovieEntity.releaseDate, domainMovie.releaseDate)
+            assertEquals(mockedMovieEntity.adult, domainMovie.adult)
+            job.cancel()
         }
-        advanceUntilIdle()
-
-        assertEquals(1, differ.itemCount)
-        val domainMovie = differ.getItem(0)
-        assertNotNull(domainMovie)
-        assertInstanceOf<DomainMovie>(domainMovie)
-        assertEquals(mockedMovieEntity.id, domainMovie.id)
-        assertEquals(mockedMovieEntity.title, domainMovie.title)
-        assertEquals(mockedMovieEntity.posterPath, domainMovie.posterPath)
-        assertEquals(mockedMovieEntity.overview, domainMovie.overview)
-        assertEquals(mockedMovieEntity.voteAverage, domainMovie.voteAverage)
-        assertEquals(mockedMovieEntity.voteCount, domainMovie.voteCount)
-        assertEquals(mockedMovieEntity.originalLanguage, domainMovie.originalLanguage)
-        assertEquals(mockedMovieEntity.releaseDate, domainMovie.releaseDate)
-        assertEquals(mockedMovieEntity.adult, domainMovie.adult)
-        job.cancel()
-    }
 }
-

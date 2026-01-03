@@ -20,7 +20,7 @@ fun MainScreen(navController: NavHostController = rememberNavController()) {
     ) { paddingValues ->
         MainNavGraph(
             modifier = Modifier.padding(bottom = paddingValues.calculateBottomPadding()),
-            navController = navController
+            navController = navController,
         )
     }
 }

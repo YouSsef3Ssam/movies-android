@@ -12,9 +12,10 @@ class MovieDetailsEntry(
 ) {
     companion object Companion {
         val typeMap
-            get() = mapOf(
-                typeOf<MovieArgs>() to MovieArgsNavType,
-                typeOf<MovieArgs?>() to MovieArgsNavType,
-            )
+            get() =
+                mapOf(
+                    typeOf<MovieArgs>() to MovieArgsNavType,
+                    typeOf<MovieArgs?>() to MovieArgsNavType,
+                )
     }
 }

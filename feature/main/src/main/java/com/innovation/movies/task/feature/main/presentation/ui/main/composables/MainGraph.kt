@@ -9,7 +9,10 @@ import com.innovation.movies.task.core.navigation.extensions.InnovationNavHost
 import com.innovation.movies.task.feature.main.presentation.ui.main.composables.modules.moviesModule
 
 @Composable
-internal fun MainNavGraph(modifier: Modifier = Modifier, navController: NavHostController) {
+internal fun MainNavGraph(
+    modifier: Modifier = Modifier,
+    navController: NavHostController,
+) {
     InnovationNavHost(
         modifier = modifier,
         navController = navController,

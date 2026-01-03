@@ -24,32 +24,38 @@ class MovieDetailsViewModelTest {
     private lateinit var viewModel: MovieDetailsViewModel
     private val movieArgs = mockedMovieEntity.toDomain().toUI().toArgs()
     private val movieArgsString = json.encodeToString(MovieArgs.serializer(), movieArgs)
-    private fun initViewModel(id: String? = movieArgs.id, movieJson: String? = movieArgsString) {
+
+    private fun initViewModel(
+        id: String? = movieArgs.id,
+        movieJson: String? = movieArgsString,
+    ) {
         every { savedStateHandle.get<String>("id") } returns id
         every { savedStateHandle.get<String>("movie") } returns movieJson
         viewModel = MovieDetailsViewModel(savedStateHandle = savedStateHandle, json = json)
     }
 
     @Test
-    fun `state should contain movie details when movie args are provided`() = runTest {
-        initViewModel()
-        viewModel.state.test {
-            val state = awaitItem()
+    fun `state should contain movie details when movie args are provided`() =
+        runTest {
+            initViewModel()
+            viewModel.state.test {
+                val state = awaitItem()
 
-            assertNotNull(state.movie)
-            assertEquals(movieArgs.id, state.movie?.id)
-            assertEquals(movieArgs.title, state.movie?.title)
-            cancelAndIgnoreRemainingEvents()
+                assertNotNull(state.movie)
+                assertEquals(movieArgs.id, state.movie?.id)
+                assertEquals(movieArgs.title, state.movie?.title)
+                cancelAndIgnoreRemainingEvents()
+            }
         }
-    }
 
     @Test
-    fun `state movie should be null when movie args string is missing`() = runTest {
-        initViewModel(movieJson = null)
-        viewModel.state.test {
-            val state = awaitItem()
-            assertNull(state.movie)
-            cancelAndIgnoreRemainingEvents()
+    fun `state movie should be null when movie args string is missing`() =
+        runTest {
+            initViewModel(movieJson = null)
+            viewModel.state.test {
+                val state = awaitItem()
+                assertNull(state.movie)
+                cancelAndIgnoreRemainingEvents()
+            }
         }
-    }
 }

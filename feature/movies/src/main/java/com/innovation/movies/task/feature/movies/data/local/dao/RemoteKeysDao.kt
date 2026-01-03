@@ -9,7 +9,6 @@ import com.innovation.movies.task.feature.movies.data.local.entities.MovieRemote
 
 @Dao
 internal interface RemoteKeysDao {
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(remoteKey: List<MovieRemoteKey>)
 

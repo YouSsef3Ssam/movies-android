@@ -1,6 +1,5 @@
 package com.innovation.movies.task.feature.movies.common
 
-
 internal const val POSTER_BASE_URL = "https://image.tmdb.org/t/p/w500"
 
 internal const val ITEM_APPEND_STATE_LOADING = "append_loading"

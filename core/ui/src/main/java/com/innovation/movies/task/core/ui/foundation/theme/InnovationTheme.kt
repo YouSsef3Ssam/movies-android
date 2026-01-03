@@ -7,7 +7,6 @@ import com.innovation.movies.task.core.ui.foundation.colorSystem.DarkColorScheme
 import com.innovation.movies.task.core.ui.foundation.colorSystem.LightColorScheme
 import com.innovation.movies.task.core.ui.foundation.typography.Typography
 
-
 @Composable
 fun InnovationTheme(
     isDark: Boolean = isSystemInDarkTheme(),
@@ -16,6 +15,6 @@ fun InnovationTheme(
     MaterialTheme(
         colorScheme = if (isDark) DarkColorScheme else LightColorScheme,
         typography = Typography,
-        content = content
+        content = content,
     )
 }

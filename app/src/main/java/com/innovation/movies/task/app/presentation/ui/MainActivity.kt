@@ -9,7 +9,6 @@ import com.innovation.movies.task.core.ui.foundation.theme.InnovationTheme
 import com.innovation.movies.task.feature.main.presentation.ui.main.MainScreen
 
 class MainActivity : AppCompatActivity() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         super.onCreate(savedInstanceState)

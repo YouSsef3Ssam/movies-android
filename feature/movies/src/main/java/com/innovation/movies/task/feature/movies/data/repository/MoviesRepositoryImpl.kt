@@ -15,14 +15,14 @@ import kotlinx.coroutines.flow.map
 
 internal class MoviesRepositoryImpl(
     private val pager: Pager<Int, MovieEntity>,
-    private val ioDispatcher: CoroutineDispatcher
+    private val ioDispatcher: CoroutineDispatcher,
 ) : MoviesRepository {
-
     @OptIn(ExperimentalPagingApi::class)
-    override fun getMovies(): Flow<PagingData<DomainMovie>> = pager
-        .flow
-        .map { paging ->
-            paging.map { it.toDomain() }
-        }
-        .flowOn(ioDispatcher)
+    override fun getMovies(): Flow<PagingData<DomainMovie>> =
+        pager
+            .flow
+            .map { paging ->
+                paging.map { it.toDomain() }
+            }
+            .flowOn(ioDispatcher)
 }

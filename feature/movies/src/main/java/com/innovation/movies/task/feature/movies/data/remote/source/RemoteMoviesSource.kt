@@ -11,10 +11,9 @@ import io.ktor.client.request.parameter
 import io.ktor.http.HttpMethod
 
 internal class RemoteMoviesSource(private val client: HttpClient) : MoviesSource {
-
     override suspend fun getMovies(
         pageNumber: Int,
-        pageSize: Int
+        pageSize: Int,
     ): PaginatedResponse<List<MovieResponseDto>> =
         client.performCall<Unit, PaginatedResponse<List<MovieResponseDto>>>(
             method = HttpMethod.Get,
@@ -22,6 +21,6 @@ internal class RemoteMoviesSource(private val client: HttpClient) : MoviesSource
             requestBuilder = {
                 parameter(PAGE_NUMBER_QUERY_PARAMETER, pageNumber)
                 parameter(PAGE_SIZE_QUERY_PARAMETER, pageSize)
-            }
+            },
         )
 }

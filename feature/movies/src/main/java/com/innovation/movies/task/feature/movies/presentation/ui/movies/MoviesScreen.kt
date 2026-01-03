@@ -42,7 +42,7 @@ internal fun MoviesRoute(
     val moviesPagingState = viewModel.moviesPagingFlow.collectAsLazyPagingItems()
     MoviesScreen(
         moviesPagingState = moviesPagingState,
-        onEvents = viewModel::onEvent
+        onEvents = viewModel::onEvent,
     )
     if (state.callback != null) {
         viewModel.onEvent(event = MoviesEvents.NavigationCallbackHandled)
@@ -57,7 +57,7 @@ private fun MoviesScreen(
 ) {
     MoviesContent(
         moviesPagingState = moviesPagingState,
-        onEvents = onEvents
+        onEvents = onEvents,
     )
     HandleError(moviesPagingState = moviesPagingState)
 }
@@ -70,29 +70,30 @@ private fun MoviesContent(
     val isRefreshing = moviesPagingState.loadState.refresh is LoadState.Loading
     val isEmpty = moviesPagingState.itemCount == 0
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .statusBarsPadding()
-            .background(MaterialTheme.colorScheme.background)
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .statusBarsPadding()
+                .background(MaterialTheme.colorScheme.background),
     ) {
         if (isRefreshing && isEmpty) {
             LoadingFullScreen(modifier = Modifier.fillMaxSize())
             return
         }
         LazyColumn(
-            modifier = Modifier.weight(1f), // Take remaining space
-            verticalArrangement = Arrangement.spacedBy(4.dp)
+            modifier = Modifier.weight(1f),
+            verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
             items(
                 count = moviesPagingState.itemCount,
-                key = moviesPagingState.itemKey { it.id }
+                key = moviesPagingState.itemKey { it.id },
             ) { index ->
                 moviesPagingState[index]?.let { movie ->
                     MovieItem(
                         movie = movie,
                         onClick = {
                             onEvents(MoviesEvents.MovieClicked(movie = movie))
-                        }
+                        },
                     )
                 }
             }
@@ -108,12 +109,11 @@ private fun HandleError(moviesPagingState: LazyPagingItems<MovieUI>) {
     LaunchedEffect(refreshError) {
         refreshError?.let {
             context.message(
-                it.error.localizedMessage ?: context.getString(R.string.error_general_message)
+                it.error.localizedMessage ?: context.getString(R.string.error_general_message),
             )
         }
     }
 }
-
 
 private fun LazyListScope.pagingAppendState(moviesPagingState: LazyPagingItems<MovieUI>) {
     when (val appendState = moviesPagingState.loadState.append) {
@@ -126,10 +126,11 @@ private fun LazyListScope.pagingAppendState(moviesPagingState: LazyPagingItems<M
         is LoadState.Error -> {
             item(key = ITEM_APPEND_STATE_ERROR) {
                 AppendError(
-                    message = appendState.error.localizedMessage
-                        ?: stringResource(R.string.error_general_message),
+                    message =
+                        appendState.error.localizedMessage
+                            ?: stringResource(R.string.error_general_message),
                     modifier = Modifier.fillParentMaxWidth(),
-                    onRetryClick = { moviesPagingState.retry() }
+                    onRetryClick = { moviesPagingState.retry() },
                 )
             }
         }

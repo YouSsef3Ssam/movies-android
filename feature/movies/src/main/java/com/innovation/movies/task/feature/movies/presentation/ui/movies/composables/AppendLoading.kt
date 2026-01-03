@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.dp
 internal fun AppendLoading(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier.padding(vertical = 8.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         CircularProgressIndicator()
     }

@@ -1,6 +1,5 @@
 package com.innovation.movies.task.feature.movies.common
 
-
 internal const val GET_MOVIES_ENDPOINT = "/3/movie/top_rated"
 
 /**

@@ -52,7 +52,6 @@ internal val ktorErrorClient =
         configureClient()
     }
 
-
 private fun HttpClientConfig<*>.configureClient() {
     expectSuccess = true
     install(ContentNegotiation) {
@@ -65,4 +64,3 @@ private fun HttpClientConfig<*>.configureClient() {
         )
     }
 }
-

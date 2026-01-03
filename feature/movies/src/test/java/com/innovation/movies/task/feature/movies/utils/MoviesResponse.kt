@@ -28,4 +28,3 @@ const val GET_MOVIES_SUCCESS_RESPONSE = """
         "total_results": 10561
     }
 """
-

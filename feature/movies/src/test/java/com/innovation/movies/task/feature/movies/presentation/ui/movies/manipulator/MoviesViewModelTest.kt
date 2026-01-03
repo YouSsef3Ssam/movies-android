@@ -43,16 +43,16 @@ import kotlin.test.assertTrue
 
 @OptIn(ExperimentalCoroutinesApi::class)
 internal class MoviesViewModelTest {
-
     private val testDispatcher = StandardTestDispatcher()
     private val repository: MoviesRepository = mockk()
     private lateinit var viewModel: MoviesViewModel
 
-    private val differ = AsyncPagingDataDiffer(
-        diffCallback = IdBasedDiffCallback<MovieUI> { it.id },
-        updateCallback = NoopListCallback,
-        workerDispatcher = Dispatchers.Main
-    )
+    private val differ =
+        AsyncPagingDataDiffer(
+            diffCallback = IdBasedDiffCallback<MovieUI> { it.id },
+            updateCallback = NoopListCallback,
+            workerDispatcher = Dispatchers.Main,
+        )
 
     @BeforeEach
     fun setUp() {
@@ -74,89 +74,97 @@ internal class MoviesViewModelTest {
      */
 
     @Test
-    fun `initial state should have null callback`() = runTest {
-        initViewModel()
-        assertNull(viewModel.state.value.callback)
-        coVerify(exactly = 1) { repository.getMovies() }
-    }
+    fun `initial state should have null callback`() =
+        runTest {
+            initViewModel()
+            assertNull(viewModel.state.value.callback)
+            coVerify(exactly = 1) { repository.getMovies() }
+        }
 
     @Test
-    fun `on MovieClicked event should update state with NavigateToDetails callback`() = runTest {
-        initViewModel()
-        val movie = mockedMovieEntity.toDomain().toUI()
-        viewModel.onEvent(MoviesEvents.MovieClicked(movie = movie))
+    fun `on MovieClicked event should update state with NavigateToDetails callback`() =
+        runTest {
+            initViewModel()
+            val movie = mockedMovieEntity.toDomain().toUI()
+            viewModel.onEvent(MoviesEvents.MovieClicked(movie = movie))
 
-        val state = viewModel.state.value
-        val callback = state.callback
+            val state = viewModel.state.value
+            val callback = state.callback
 
-        assertTrue(callback is MoviesListNavigationActionCallbacks.NavigateToDetails)
-        assertEquals(movie.id, callback.movie?.id)
-        coVerify(exactly = 1) { repository.getMovies() }
-    }
+            assertTrue(callback is MoviesListNavigationActionCallbacks.NavigateToDetails)
+            assertEquals(movie.id, callback.movie?.id)
+            coVerify(exactly = 1) { repository.getMovies() }
+        }
 
     /**
      * Paging Tests
      */
     @Test
-    fun `moviesPagingFlow should emit correctly mapped UI models from repository`() = runTest {
-        every { repository.getMovies() } returns flowOf(PagingData.from(listOf(mockedMovieEntity.toDomain())))
-        initViewModel()
+    fun `moviesPagingFlow should emit correctly mapped UI models from repository`() =
+        runTest {
+            every { repository.getMovies() } returns flowOf(PagingData.from(listOf(mockedMovieEntity.toDomain())))
+            initViewModel()
 
-        val job = launch {
-            viewModel.moviesPagingFlow.collect { differ.submitData(it) }
+            val job =
+                launch {
+                    viewModel.moviesPagingFlow.collect { differ.submitData(it) }
+                }
+            advanceUntilIdle()
+
+            assertEquals(1, differ.itemCount)
+            val item = differ.getItem(0)!!
+            assertInstanceOf<MovieUI>(item)
+            assertEquals(mockedMovieEntity.id, item.id)
+            assertEquals(mockedMovieEntity.title, item.title)
+            coVerify(exactly = 1) { repository.getMovies() }
+            job.cancel()
         }
-        advanceUntilIdle()
-
-        assertEquals(1, differ.itemCount)
-        val item = differ.getItem(0)!!
-        assertInstanceOf<MovieUI>(item)
-        assertEquals(mockedMovieEntity.id, item.id)
-        assertEquals(mockedMovieEntity.title, item.title)
-        coVerify(exactly = 1) { repository.getMovies() }
-        job.cancel()
-    }
 
     @Test
-    fun `paging flow should handle repository errors gracefully without crashing`() = runTest {
-        every { repository.getMovies() } returns flow { throw RuntimeException("Stream error") }
-        initViewModel()
+    fun `paging flow should handle repository errors gracefully without crashing`() =
+        runTest {
+            every { repository.getMovies() } returns flow { throw RuntimeException("Stream error") }
+            initViewModel()
 
-        val job = launch {
-            viewModel.moviesPagingFlow.collect { differ.submitData(it) }
+            val job =
+                launch {
+                    viewModel.moviesPagingFlow.collect { differ.submitData(it) }
+                }
+            advanceUntilIdle()
+            assertEquals(0, differ.itemCount)
+            coVerify(exactly = 1) { repository.getMovies() }
+            job.cancel()
         }
-        advanceUntilIdle()
-        assertEquals(0, differ.itemCount)
-        coVerify(exactly = 1) { repository.getMovies() }
-        job.cancel()
-    }
 
     @OptIn(ExperimentalPagingApi::class)
     @Test
-    fun `remote mediator failure should be reflected in differ load state`() = runTest {
-        val pager = Pager(
-            config = PagingConfig(PAGING_PAGE_SIZE),
-            remoteMediator = FailingMoviesRemoteMediator(),
-            pagingSourceFactory = { FakeMoviesPagingSource() }
-        )
+    fun `remote mediator failure should be reflected in differ load state`() =
+        runTest {
+            val pager =
+                Pager(
+                    config = PagingConfig(PAGING_PAGE_SIZE),
+                    remoteMediator = FailingMoviesRemoteMediator(),
+                    pagingSourceFactory = { FakeMoviesPagingSource() },
+                )
 
-        every { repository.getMovies() } returns pager.flow.map { data -> data.map { it.toDomain() } }
-        initViewModel()
+            every { repository.getMovies() } returns pager.flow.map { data -> data.map { it.toDomain() } }
+            initViewModel()
 
-        val job = launch {
-            viewModel.moviesPagingFlow.collect { differ.submitData(it) }
+            val job =
+                launch {
+                    viewModel.moviesPagingFlow.collect { differ.submitData(it) }
+                }
+            advanceUntilIdle()
+
+            val loadState = differ.loadStateFlow.first()
+            val refreshState = loadState.refresh
+            assertTrue(refreshState is LoadState.Error)
+            val errorState = loadState.refresh as LoadState.Error
+            assertEquals(
+                FailingMoviesRemoteMediator.ERROR_MESSAGE,
+                errorState.error.message,
+            )
+            coVerify(exactly = 1) { repository.getMovies() }
+            job.cancel()
         }
-        advanceUntilIdle()
-
-        val loadState = differ.loadStateFlow.first()
-        val refreshState = loadState.refresh
-        assertTrue(refreshState is LoadState.Error)
-        val errorState = loadState.refresh as LoadState.Error
-        assertEquals(
-            FailingMoviesRemoteMediator.ERROR_MESSAGE,
-            errorState.error.message
-        )
-        coVerify(exactly = 1) { repository.getMovies() }
-        job.cancel()
-    }
 }
-

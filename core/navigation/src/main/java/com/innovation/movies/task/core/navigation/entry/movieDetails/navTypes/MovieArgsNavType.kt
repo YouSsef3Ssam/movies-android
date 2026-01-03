@@ -7,9 +7,10 @@ import com.innovation.movies.task.core.navigation.entry.movieDetails.args.MovieA
 import kotlinx.serialization.json.Json
 
 object MovieArgsNavType : NavType<MovieArgs?>(isNullableAllowed = true) {
-
-    override fun get(bundle: Bundle, key: String): MovieArgs? {
-
+    override fun get(
+        bundle: Bundle,
+        key: String,
+    ): MovieArgs? {
         return Json.decodeFromString(bundle.getString(key) ?: return null)
     }
 
@@ -21,7 +22,11 @@ object MovieArgsNavType : NavType<MovieArgs?>(isNullableAllowed = true) {
         return Uri.encode(Json.encodeToString(value))
     }
 
-    override fun put(bundle: Bundle, key: String, value: MovieArgs?) {
+    override fun put(
+        bundle: Bundle,
+        key: String,
+        value: MovieArgs?,
+    ) {
         bundle.putString(key, Json.encodeToString(value))
     }
 }

@@ -32,29 +32,30 @@ class RemoteMoviesSourceTest : KoinTest {
     }
 
     @Test
-    fun `getMovies returns success when API call is successful`() = runTest {
-        val source: MoviesSource = get(TestingQualifier.SUCCESS.qualifier)
-        val response = source.getMovies(
-            pageNumber = PAGING_STARTING_PAGE,
-            pageSize = PAGING_PAGE_SIZE
-        )
-        assertThat(response).isInstanceOf(PaginatedResponse::class.java)
-        assertThat(response.data?.first()).isInstanceOf(MovieResponseDto::class.java)
-    }
-
+    fun `getMovies returns success when API call is successful`() =
+        runTest {
+            val source: MoviesSource = get(TestingQualifier.SUCCESS.qualifier)
+            val response =
+                source.getMovies(
+                    pageNumber = PAGING_STARTING_PAGE,
+                    pageSize = PAGING_PAGE_SIZE,
+                )
+            assertThat(response).isInstanceOf(PaginatedResponse::class.java)
+            assertThat(response.data?.first()).isInstanceOf(MovieResponseDto::class.java)
+        }
 
     @Test
-    fun `getMovies throws exception when API call fails`() = runTest {
-        val source: MoviesSource = get(TestingQualifier.FAILURE.qualifier)
-        val exception = runCatching {
-            source.getMovies(
-                pageNumber = PAGING_STARTING_PAGE,
-                pageSize = PAGING_PAGE_SIZE
-            )
-        }.exceptionOrNull()
-        assertThat(exception).isNotNull()
-        assertThat(exception?.message).isNotNull()
-    }
-
+    fun `getMovies throws exception when API call fails`() =
+        runTest {
+            val source: MoviesSource = get(TestingQualifier.FAILURE.qualifier)
+            val exception =
+                runCatching {
+                    source.getMovies(
+                        pageNumber = PAGING_STARTING_PAGE,
+                        pageSize = PAGING_PAGE_SIZE,
+                    )
+                }.exceptionOrNull()
+            assertThat(exception).isNotNull()
+            assertThat(exception?.message).isNotNull()
+        }
 }
-

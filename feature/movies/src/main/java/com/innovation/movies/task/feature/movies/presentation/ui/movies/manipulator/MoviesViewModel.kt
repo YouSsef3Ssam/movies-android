@@ -20,13 +20,14 @@ internal class MoviesViewModel(
     private val _state: MutableStateFlow<MoviesState> = MutableStateFlow(MoviesState())
     val state: StateFlow<MoviesState> = _state.asStateFlow()
 
-    val moviesPagingFlow = repository
-        .getMovies()
-        .catch { }
-        .map { paging ->
-            paging.map { it.toUI() }
-        }
-        .cachedIn(viewModelScope)
+    val moviesPagingFlow =
+        repository
+            .getMovies()
+            .catch { }
+            .map { paging ->
+                paging.map { it.toUI() }
+            }
+            .cachedIn(viewModelScope)
 
     fun onEvent(event: MoviesEvents) {
         when (event) {
@@ -37,10 +38,11 @@ internal class MoviesViewModel(
             is MoviesEvents.MovieClicked -> {
                 _state.update {
                     it.copy(
-                        callback = MoviesListNavigationActionCallbacks.NavigateToDetails(
-                            id = event.movie.id,
-                            movie = event.movie.toArgs()
-                        )
+                        callback =
+                            MoviesListNavigationActionCallbacks.NavigateToDetails(
+                                id = event.movie.id,
+                                movie = event.movie.toArgs(),
+                            ),
                     )
                 }
             }

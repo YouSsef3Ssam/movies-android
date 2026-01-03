@@ -12,5 +12,5 @@ class MovieArgs(
     val releaseDate: String,
     val voteAverage: Double,
     val voteCount: Int,
-    val originalLanguage: String
+    val originalLanguage: String,
 )

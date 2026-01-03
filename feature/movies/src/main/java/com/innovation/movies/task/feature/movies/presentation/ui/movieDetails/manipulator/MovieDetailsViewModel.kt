@@ -12,12 +12,12 @@ import kotlinx.serialization.json.Json
 
 internal class MovieDetailsViewModel(
     savedStateHandle: SavedStateHandle,
-    json: Json
+    json: Json,
 ) : ViewModel() {
-
     private val movieId = savedStateHandle.get<String>("id")
-    private val movie: MovieArgs? = savedStateHandle.get<String>("movie")
-        ?.run { json.decode(this) }
+    private val movie: MovieArgs? =
+        savedStateHandle.get<String>("movie")
+            ?.run { json.decode(this) }
 
     private val _state: MutableStateFlow<MovieDetailsState> =
         MutableStateFlow(MovieDetailsState(movie = movie?.toUI()))
@@ -25,8 +25,7 @@ internal class MovieDetailsViewModel(
 
     init {
         if (movie == null) {
-            //TODO("Fetch pos details From the remote using movieId")
+            // TODO("Fetch pos details From the remote using movieId")
         }
     }
-
 }

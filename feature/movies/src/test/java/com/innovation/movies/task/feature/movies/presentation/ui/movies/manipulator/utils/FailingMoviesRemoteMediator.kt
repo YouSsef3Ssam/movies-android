@@ -8,13 +8,12 @@ import com.innovation.movies.task.feature.movies.data.local.entities.MovieEntity
 
 @OptIn(ExperimentalPagingApi::class)
 internal class FailingMoviesRemoteMediator : RemoteMediator<Int, MovieEntity>() {
-
     override suspend fun load(
         loadType: LoadType,
-        state: PagingState<Int, MovieEntity>
+        state: PagingState<Int, MovieEntity>,
     ): MediatorResult {
         return MediatorResult.Error(
-            RuntimeException(ERROR_MESSAGE)
+            RuntimeException(ERROR_MESSAGE),
         )
     }
 
@@ -22,4 +21,3 @@ internal class FailingMoviesRemoteMediator : RemoteMediator<Int, MovieEntity>() 
         const val ERROR_MESSAGE = "Network error from mediator"
     }
 }
-

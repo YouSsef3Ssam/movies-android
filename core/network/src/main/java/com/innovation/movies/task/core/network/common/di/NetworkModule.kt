@@ -16,4 +16,4 @@ private val networkClientModule =
         }
     }
 
-val networkModule =  networkClientModule
+val networkModule = networkClientModule

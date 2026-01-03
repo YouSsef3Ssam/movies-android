@@ -13,6 +13,6 @@ internal fun MovieResponseDto.toEntity(): MovieEntity {
         releaseDate = releaseDate.orEmpty(),
         voteAverage = voteAverage ?: 1.0,
         voteCount = voteCount ?: 1,
-        originalLanguage = originalLanguage.orEmpty()
+        originalLanguage = originalLanguage.orEmpty(),
     )
 }

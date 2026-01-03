@@ -43,10 +43,11 @@ private fun MovieDetailsScreen(state: MovieDetailsState) {
 @Composable
 private fun MovieDetailsContent(movie: MovieUI) {
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .background(MaterialTheme.colorScheme.background)
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .background(MaterialTheme.colorScheme.background),
     ) {
         MoviePoster(movie.posterImage)
         MovieTitle(movie.title)
@@ -59,10 +60,11 @@ private fun MovieDetailsContent(movie: MovieUI) {
 private fun MoviePoster(imageUrl: String) {
     InnovationRemoteImage(
         image = imageUrl,
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(400.dp),
-        contentScale = ContentScale.FillBounds
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .height(400.dp),
+        contentScale = ContentScale.FillBounds,
     )
     Spacer(modifier = Modifier.height(16.dp))
 }
@@ -73,7 +75,7 @@ private fun MovieTitle(title: String) {
         text = title,
         modifier = Modifier.padding(horizontal = 16.dp),
         style = MaterialTheme.typography.titleLarge,
-        fontWeight = FontWeight.Bold
+        fontWeight = FontWeight.Bold,
     )
 
     Spacer(modifier = Modifier.height(16.dp))
@@ -83,27 +85,30 @@ private fun MovieTitle(title: String) {
 private fun MovieDetailsInfo(movie: MovieUI) {
     Column(
         modifier = Modifier.padding(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         MovieInfoRow(
             label = stringResource(R.string.movie_details_screen_adult_label),
-            value = if (movie.adult) {
-                stringResource(R.string.movie_details_screen_movie_type_adult)
-            } else {
-                stringResource(R.string.movie_details_screen_movie_type_not_adult)
-            }
+            value =
+                if (movie.adult) {
+                    stringResource(R.string.movie_details_screen_movie_type_adult)
+                } else {
+                    stringResource(R.string.movie_details_screen_movie_type_not_adult)
+                },
         )
         MovieInfoRow(
             label = stringResource(R.string.movie_details_screen_rate_label),
-            value = "${"%.1f".format(movie.voteAverage)} (${movie.voteCount} ${stringResource(R.string.movie_details_screen_votes_label)})"
+            value = "${"%.1f".format(
+                movie.voteAverage,
+            )} (${movie.voteCount} ${stringResource(R.string.movie_details_screen_votes_label)})",
         )
         MovieInfoRow(
             label = stringResource(R.string.movie_details_screen_language_label),
-            value = movie.originalLanguage.uppercase()
+            value = movie.originalLanguage.uppercase(),
         )
         MovieInfoRow(
             label = stringResource(R.string.movie_details_screen_release_date_label),
-            value = movie.releaseDate
+            value = movie.releaseDate,
         )
     }
 
@@ -113,23 +118,23 @@ private fun MovieDetailsInfo(movie: MovieUI) {
 @Composable
 private fun MovieInfoRow(
     label: String,
-    value: String
+    value: String,
 ) {
     Text(
         text = "$label: $value",
-        style = MaterialTheme.typography.bodyMedium
+        style = MaterialTheme.typography.bodyMedium,
     )
 }
 
 @Composable
 private fun MovieOverview(overview: String) {
     Column(
-        modifier = Modifier.padding(horizontal = 16.dp)
+        modifier = Modifier.padding(horizontal = 16.dp),
     ) {
         Text(
             text = stringResource(R.string.movie_details_screen_overview_label),
             style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.SemiBold
+            fontWeight = FontWeight.SemiBold,
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -137,7 +142,7 @@ private fun MovieOverview(overview: String) {
         Text(
             text = overview,
             style = MaterialTheme.typography.bodyMedium,
-            lineHeight = 20.sp
+            lineHeight = 20.sp,
         )
     }
 

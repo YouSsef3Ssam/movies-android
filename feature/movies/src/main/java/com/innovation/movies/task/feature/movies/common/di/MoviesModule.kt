@@ -21,48 +21,53 @@ import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.core.qualifier.qualifier
 import org.koin.dsl.module
 
-private val dataSources = module {
-    single<MoviesSource> {
-        RemoteMoviesSource(client = get())
+private val dataSources =
+    module {
+        single<MoviesSource> {
+            RemoteMoviesSource(client = get())
+        }
     }
-}
-
 
 @OptIn(ExperimentalPagingApi::class)
-private val pager = module {
-    single<Pager<Int, MovieEntity>> {
-        val moviesDatabase = get<MoviesDatabase>()
-        Pager(
-            config = PagingConfig(
-                initialLoadSize = PAGING_PAGE_SIZE,
-                pageSize = PAGING_PAGE_SIZE,
-                prefetchDistance = PAGING_PREFETCH_DISTANCE,
-                enablePlaceholders = true
-            ),
-            remoteMediator = MoviesRemoteMediator(
-                remoteSource = get(),
-                moviesDatabase = moviesDatabase
-            ),
-            pagingSourceFactory = {
-                moviesDatabase.moviesDao().pagingSource()
-            }
-        )
+private val pager =
+    module {
+        single<Pager<Int, MovieEntity>> {
+            val moviesDatabase = get<MoviesDatabase>()
+            Pager(
+                config =
+                    PagingConfig(
+                        initialLoadSize = PAGING_PAGE_SIZE,
+                        pageSize = PAGING_PAGE_SIZE,
+                        prefetchDistance = PAGING_PREFETCH_DISTANCE,
+                        enablePlaceholders = true,
+                    ),
+                remoteMediator =
+                    MoviesRemoteMediator(
+                        remoteSource = get(),
+                        moviesDatabase = moviesDatabase,
+                    ),
+                pagingSourceFactory = {
+                    moviesDatabase.moviesDao().pagingSource()
+                },
+            )
+        }
     }
-}
 
-private val repositories = module {
-    single<MoviesRepository> {
-        MoviesRepositoryImpl(
-            pager = get(),
-            ioDispatcher = get(DispatcherQualifier.IO.qualifier)
-        )
+private val repositories =
+    module {
+        single<MoviesRepository> {
+            MoviesRepositoryImpl(
+                pager = get(),
+                ioDispatcher = get(DispatcherQualifier.IO.qualifier),
+            )
+        }
     }
-}
 
-private val viewModels = module {
-    viewModelOf(::MoviesViewModel)
-    viewModelOf(::MovieDetailsViewModel)
-}
+private val viewModels =
+    module {
+        viewModelOf(::MoviesViewModel)
+        viewModelOf(::MovieDetailsViewModel)
+    }
 
 val moviesModule =
     commonModule + networkModule + databaseModule + dataSources + pager + repositories + viewModels

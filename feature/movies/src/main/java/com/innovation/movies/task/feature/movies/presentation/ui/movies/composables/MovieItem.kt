@@ -36,18 +36,20 @@ internal fun MovieItem(
     onClick: () -> Unit,
 ) {
     Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 12.dp, vertical = 6.dp),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 12.dp, vertical = 6.dp),
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.elevatedCardColors(containerColor = MaterialTheme.colorScheme.surface),
-        elevation = CardDefaults.cardElevation(2.dp)
+        elevation = CardDefaults.cardElevation(2.dp),
     ) {
         Row(
-            modifier = Modifier
-                .clickable(onClick = onClick)
-                .padding(12.dp),
-            verticalAlignment = Alignment.CenterVertically
+            modifier =
+                Modifier
+                    .clickable(onClick = onClick)
+                    .padding(12.dp),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             MovieStatusIndicator(adult = movie.adult)
             Spacer(modifier = Modifier.width(8.dp))
@@ -58,27 +60,27 @@ internal fun MovieItem(
                 voteAverage = movie.voteAverage,
                 voteCount = movie.voteCount,
                 releaseDate = movie.releaseDate,
-                adult = movie.adult
+                adult = movie.adult,
             )
         }
     }
 }
 
 @Composable
-private fun MovieStatusIndicator(
-    adult: Boolean
-) {
-    val indicatorColor = if (adult) {
-        Color.Yellow
-    } else {
-        Color.Green
-    }
+private fun MovieStatusIndicator(adult: Boolean) {
+    val indicatorColor =
+        if (adult) {
+            Color.Yellow
+        } else {
+            Color.Green
+        }
     Box(
-        modifier = Modifier
-            .width(4.dp)
-            .height(48.dp)
-            .clip(RoundedCornerShape(2.dp))
-            .background(indicatorColor)
+        modifier =
+            Modifier
+                .width(4.dp)
+                .height(48.dp)
+                .clip(RoundedCornerShape(2.dp))
+                .background(indicatorColor),
     )
 }
 
@@ -86,7 +88,7 @@ private fun MovieStatusIndicator(
 private fun MovieAvatar(image: String) {
     InnovationRemoteRoundedImage(
         image = image,
-        modifier = Modifier.size(48.dp)
+        modifier = Modifier.size(48.dp),
     )
 }
 
@@ -96,7 +98,7 @@ private fun MovieInfo(
     voteAverage: Double,
     voteCount: Int,
     releaseDate: String,
-    adult: Boolean
+    adult: Boolean,
 ) {
     Column {
         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -107,7 +109,7 @@ private fun MovieInfo(
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.weight(1f),
                 maxLines = 1,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
             )
 
             MovieCertification(adult = adult)
@@ -121,30 +123,33 @@ private fun MovieInfo(
 
         MovieMeta(
             voteCount = voteCount,
-            releaseYear = releaseDate.take(4)
+            releaseYear = releaseDate,
         )
     }
 }
 
 @Composable
-private fun MovieCertification(
-    adult: Boolean
-) {
+private fun MovieCertification(adult: Boolean) {
     Text(
-        text = if (adult) stringResource(R.string.movie_adult_label) else stringResource(R.string.movie_not_adult_label),
+        text =
+            if (adult) {
+                stringResource(
+                    R.string.movie_adult_label,
+                )
+            } else {
+                stringResource(R.string.movie_not_adult_label)
+            },
         style = MaterialTheme.typography.labelSmall,
         color = MaterialTheme.colorScheme.onSurfaceVariant,
     )
 }
 
 @Composable
-private fun MovieRating(
-    rating: Double
-) {
+private fun MovieRating(rating: Double) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Text(
             text = "⭐",
-            fontSize = 12.sp
+            fontSize = 12.sp,
         )
         Spacer(modifier = Modifier.width(4.dp))
         Text(
@@ -158,15 +163,16 @@ private fun MovieRating(
 @Composable
 private fun MovieMeta(
     voteCount: Int,
-    releaseYear: String
+    releaseYear: String,
 ) {
     Text(
-        text = stringResource(
-            id = R.string.movies_screen_item_movie_votes_and_year,
-            voteCount,
-            releaseYear
-        ),
+        text =
+            stringResource(
+                id = R.string.movies_screen_item_movie_votes_and_year,
+                voteCount,
+                releaseYear,
+            ),
         style = MaterialTheme.typography.bodySmall,
-        color = MaterialTheme.colorScheme.onSurfaceVariant
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
     )
 }

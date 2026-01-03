@@ -1,6 +1,5 @@
 package com.innovation.movies.task.feature.movies.data.remote.dto
 
-
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -14,5 +13,5 @@ internal class MovieResponseDto(
     @SerialName("release_date") val releaseDate: String? = null,
     @SerialName("vote_average") val voteAverage: Double? = null,
     @SerialName("vote_count") val voteCount: Int? = null,
-    @SerialName("original_language") val originalLanguage: String? = null
+    @SerialName("original_language") val originalLanguage: String? = null,
 )

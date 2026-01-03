@@ -14,5 +14,6 @@ import com.innovation.movies.task.feature.movies.data.local.entities.MovieRemote
 )
 internal abstract class MoviesDatabase : RoomDatabase() {
     abstract fun moviesDao(): MoviesDao
+
     abstract fun remoteKeysDao(): RemoteKeysDao
 }

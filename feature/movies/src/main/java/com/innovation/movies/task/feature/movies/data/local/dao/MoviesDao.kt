@@ -10,7 +10,6 @@ import com.innovation.movies.task.feature.movies.data.local.entities.MovieEntity
 
 @Dao
 internal interface MoviesDao {
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(movies: List<MovieEntity>)
 
