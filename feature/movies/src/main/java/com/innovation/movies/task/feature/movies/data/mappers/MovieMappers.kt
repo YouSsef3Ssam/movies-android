@@ -14,5 +14,10 @@ internal fun MovieResponseDto.toEntity(): MovieEntity {
         voteAverage = voteAverage ?: 1.0,
         voteCount = voteCount ?: 1,
         originalLanguage = originalLanguage.orEmpty(),
+        backdropPath = backdropPath.orEmpty(),
+        genreIds = genreIds.orEmpty(),
+        originalTitle = originalTitle.orEmpty(),
+        popularity = popularity ?: 0.0,
+        video = video ?: false,
     )
 }

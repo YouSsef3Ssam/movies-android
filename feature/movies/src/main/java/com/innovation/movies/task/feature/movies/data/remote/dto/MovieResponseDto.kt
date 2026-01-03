@@ -14,4 +14,9 @@ internal class MovieResponseDto(
     @SerialName("vote_average") val voteAverage: Double? = null,
     @SerialName("vote_count") val voteCount: Int? = null,
     @SerialName("original_language") val originalLanguage: String? = null,
+    @SerialName("backdrop_path") val backdropPath: String? = null,
+    @SerialName("genre_ids") val genreIds: List<Int>? = null,
+    @SerialName("original_title") val originalTitle: String? = null,
+    @SerialName("popularity") val popularity: Double? = null,
+    @SerialName("video") val video: Boolean? = null,
 )

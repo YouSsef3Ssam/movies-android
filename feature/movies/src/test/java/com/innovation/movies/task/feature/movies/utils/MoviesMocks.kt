@@ -13,4 +13,9 @@ internal val mockedMovieEntity =
         releaseDate = "date",
         adult = false,
         originalLanguage = "en",
+        backdropPath = "backdrop",
+        genreIds = listOf(1, 2),
+        originalTitle = "original",
+        popularity = 2000.0,
+        video = false,
     )
