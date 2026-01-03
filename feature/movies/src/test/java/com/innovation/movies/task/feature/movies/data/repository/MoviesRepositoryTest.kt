@@ -3,6 +3,7 @@ package com.innovation.movies.task.feature.movies.data.repository
 import androidx.paging.AsyncPagingDataDiffer
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
+import com.innovation.movies.task.feature.movies.common.POSTER_BASE_URL
 import com.innovation.movies.task.feature.movies.domain.model.DomainMovie
 import com.innovation.movies.task.feature.movies.utils.FakeMoviesPagingSource
 import com.innovation.movies.task.feature.movies.utils.IdBasedDiffCallback
@@ -72,7 +73,7 @@ internal class MoviesRepositoryTest {
             assertInstanceOf<DomainMovie>(domainMovie)
             assertEquals(mockedMovieEntity.id, domainMovie.id)
             assertEquals(mockedMovieEntity.title, domainMovie.title)
-            assertEquals(mockedMovieEntity.posterPath, domainMovie.posterPath)
+            assertEquals("${POSTER_BASE_URL}${mockedMovieEntity.posterPath}", domainMovie.posterImage)
             assertEquals(mockedMovieEntity.overview, domainMovie.overview)
             assertEquals(mockedMovieEntity.voteAverage, domainMovie.voteAverage)
             assertEquals(mockedMovieEntity.voteCount, domainMovie.voteCount)
